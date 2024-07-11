@@ -1,3 +1,4 @@
+from datetime import date
 from typing import Optional, List
 
 from pydantic import BaseModel
@@ -5,14 +6,14 @@ from pydantic import BaseModel
 
 class VisitCreateEditSchema(BaseModel):
     patient_id: int
-    visit_date: str
+    visit_date: date
     summary: str
 
 
 class VisitSchema(BaseModel):
     id: int
     patient_id: int
-    visit_date: str
+    visit_date: date
     summary: str
 
 
