@@ -20,7 +20,7 @@ class Patients(Base):
     email: Mapped[str] = mapped_column(String(128))
     medical_history: Mapped[str] = mapped_column(String(128))
 
-    visits: Mapped[List["Visits"]] = relationship(back_populates="parent")
+    visits: Mapped[List[Visits]] = relationship("Visits")
 
     def __repr__(self) -> str:
         return f"Patients(id={self.id!r}, name={self.name!r})"
