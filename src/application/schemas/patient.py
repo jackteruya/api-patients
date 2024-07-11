@@ -1,3 +1,4 @@
+from datetime import date
 from typing import Optional, List
 
 from pydantic import BaseModel
@@ -5,7 +6,7 @@ from pydantic import BaseModel
 
 class PatientCreateEditSchema(BaseModel):
     name: str
-    birth_date: str
+    birth_date: date
     address: str
     phone: str
     email: str
