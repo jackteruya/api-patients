@@ -1,8 +1,9 @@
 from datetime import date
 
-from sqlalchemy import update
+from sqlalchemy import update, select
+from sqlalchemy.orm import aliased
 
-from src.infra.db.entities import Patients
+from src.infra.db.entities import Patients, Visits
 from src.interfaces.repository import PatientRepositoryInterface
 
 
@@ -23,9 +24,10 @@ class PatientRepository(PatientRepositoryInterface):
     def list_patients(self):
         try:
             with self.__db_connection() as db_connection:
-                patients = db_connection.session.query(Patients).all()
+                patients = db_connection.session.scalars(select(Patients)).all()
                 return patients
         except Exception as ex:
+            print(ex)
             raise None
 
     def create_patient(self, name: str, birth_date: date, address: str, phone: str, email: str, medical_history: str):

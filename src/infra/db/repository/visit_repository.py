@@ -1,5 +1,7 @@
 from datetime import date
 
+from sqlalchemy import desc
+
 from src.infra.db.entities import Visits
 from src.interfaces.repository import VisitRepositoryInterface
 
@@ -12,7 +14,6 @@ class VisitRepository(VisitRepositoryInterface):
     def get_by_id(self, id: int):
         try:
             with self.__db_connection() as db_connection:
-                # select(Patients).where(Patients.id == id)
                 visit = db_connection.session.query(Visits).filter_by(id=id).first()
                 return visit
         except Exception as ex:
@@ -21,10 +22,9 @@ class VisitRepository(VisitRepositoryInterface):
     def get_by_patient_id(self, patient_id: int):
         try:
             with self.__db_connection() as db_connection:
-                # select(Patients).where(Patients.id == id)
                 visit = db_connection.session.query(Visits).filter_by(
                     patient_id=patient_id
-                ).order_by('visit_date').first()
+                ).order_by(desc(Visits.visit_date)).first()
                 return visit
         except Exception as ex:
             raise None
