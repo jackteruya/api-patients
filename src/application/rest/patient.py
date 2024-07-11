@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
 
 from src.application.schemas.patient import PatientCreateEditSchema, PatientSchema, DataPatientsSchema
-from src.domain.use_cases.patients import CreatePatientUseCase
-from src.infra.db.repository import PatientRepository
+from src.domain.use_cases.patients import CreatePatientUseCase, ListPatientUseCase
+from src.infra.db.repository import PatientRepository, VisitRepository
 from src.infra.db.settings import DBConnectionHandler
 
 patient_route: APIRouter = APIRouter(prefix="/api/v1/patients")
@@ -13,24 +13,18 @@ list_ = []
 
 @patient_route.get('', response_model=DataPatientsSchema)
 def list_patients():
-    data = []
-    for d in list_:
-        data.append({
-            "id": d['id'],
-            "name": d['name'],
-            "age": int(d['birth_date'][-2:]),
-            "phone": d['phone'],
-            "email": d['email'],
-            "last_visit_summary": d['medical_history']
-        })
-    return {'data': data}
+    use_case = ListPatientUseCase(
+        PatientRepository(DBConnectionHandler),
+        VisitRepository(DBConnectionHandler)
+    )
+    result = use_case.execute()
+    return DataPatientsSchema(data=result.value)
 
 
 @patient_route.post('', response_model=PatientSchema)
 def create_patients(patient: PatientCreateEditSchema):
     use_case = CreatePatientUseCase(PatientRepository(DBConnectionHandler))
     data = use_case.execute(patient)
-    list_.append(data.value)
     return PatientSchema(
         id=data.value.id,
         name=data.value.name,
