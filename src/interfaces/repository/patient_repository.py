@@ -21,6 +21,8 @@ class PatientRepositoryInterface(ABC):
         raise Exception("Method not implemented")
 
     @abstractmethod
-    def edit_patient(self, name: int, birth_date: date, address: str, phone: str, email: str, medical_history: str):
+    def edit_patient(
+            self, id: int, name: int, birth_date: date, address: str, phone: str, email: str, medical_history: str
+    ):
         """abstractmethod"""
         raise Exception("Method not implemented")
