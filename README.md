@@ -1,24 +1,32 @@
 Para ambiente linux.
 
-Com do docker instaldo, caso não tenha -> https://docs.docker.com/engine/install/ e https://docs.docker.com/compose/install/
+Com o docker e docker-compose instaldo, ou caso não tenha siga os passo nos links -> 
+[link 1](https://docs.docker.com/engine/install/) 
+e 
+[link 2](https://docs.docker.com/compose/install/)
 
-Primeiro passo, altere o arquivo env.tex para .env;
+Primeiro passo, altere o arquivo env.exemplo para .env;
 
 
 Para rodar ao banco de dados, no docker-compose.yml para subir um container, no terminal.
 
-    $ docker-compose up
+    $ docker compose up db-patient -d
 
 
 É necessario incluir na raiz do projeto um arquivo `.env` com as seguintes informações ou alterar o arquivo .env.exemplo para .env:
     
-    DB_URL=postgresql+asyncpg://admin:admin@localhost:5433/postgres
+    DB_URL=postgresql+psycopg://postgres:postgres@127.0.0.1:5432/dbp
+
+
+Mas caso tenho o postgres instalado localmente é necessario informar informar no .env usuario, senha, host, porta e databasenanme na variavel DB_URL:
+    
+    - exemplo: DB_URL=postgresql+psycopg://{usuario}:{senha}@{host}:{porta}/{databasenanme}
 
 
 Caso não inclua o .env, sera criado um banco sqlite -> backend_test.db
 
 
-Para rodar a aplicação, mas será necessario ter o python instalado, de preferencia a versão 3.10:
+Para rodar a aplicação, mas será necessario ter o python instalado, de preferencia a versão 3.12:
     
     1-Craindo o ambiente:
         $ python -m venv .venv
