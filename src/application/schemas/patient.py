@@ -34,3 +34,6 @@ class PatientsListSchema(BaseModel):
 
 class DataPatientsSchema(BaseModel):
     data: List[PatientsListSchema]
+    page: int
+    count: int
+    limit: int

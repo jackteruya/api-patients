@@ -1,8 +1,7 @@
 from datetime import date
 
-from src.domain.entities.patients import Patient
 from src.interfaces.repository import PatientRepositoryInterface, VisitRepositoryInterface
-from src.response import ResponseFailure, ResponseTypes, ResponseSuccess
+from src.response import ResponseFailure, ResponseTypes, ResponseListSuccess
 
 
 class ListPatientUseCase:
@@ -13,13 +12,15 @@ class ListPatientUseCase:
         self._patient_repository = patient_repository
         self._visit_repository = visit_repository
 
-    def execute(self):
+    def execute(self, offset=0, limit=5):
         try:
-            patients = self._patient_repository.list_patients()
+            offset_ = 0 if offset in [0, 1] else limit*offset-1
+            patients = self._patient_repository.list_patients(limit, offset_)
             if not patients:
                 return ResponseFailure(ResponseTypes.PARAMETERS_ERROR, 'Not Insert')
             patients = [self._validate_patient(patient) for patient in patients]
-            return ResponseSuccess(patients)
+            count_patients = self._patient_repository.count_patients()
+            return ResponseListSuccess(patients, limit, offset, count_patients)
         except Exception as ex:
             return ResponseFailure(ResponseTypes.SYSTEM_ERROR, 'System Error')
 

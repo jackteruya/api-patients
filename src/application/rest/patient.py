@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import APIRouter, HTTPException
 
 from src.application.schemas.patient import PatientCreateEditSchema, PatientSchema, DataPatientsSchema
@@ -12,13 +14,13 @@ list_ = []
 
 
 @patient_route.get('', response_model=DataPatientsSchema)
-def list_patients():
+def list_patients(page: int | None = 1, limit: int | None = 5):
     use_case = ListPatientUseCase(
         PatientRepository(DBConnectionHandler),
         VisitRepository(DBConnectionHandler)
     )
-    result = use_case.execute()
-    return DataPatientsSchema(data=result.value)
+    result = use_case.execute(page, limit)
+    return DataPatientsSchema(data=result.value, page=result.offset, limit=result.limit, count=result.count)
 
 
 @patient_route.post('', response_model=PatientSchema)
