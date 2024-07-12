@@ -27,7 +27,7 @@ class VisitRepository(VisitRepositoryInterface):
                 ).order_by(desc(Visits.visit_date)).first()
                 return visit
         except Exception as ex:
-            raise None
+            return None
 
     def create_visit(self, patient_id: int, visit_date: date, summary: str):
         try:
@@ -42,4 +42,4 @@ class VisitRepository(VisitRepositoryInterface):
                 db_connection.session.refresh(new_visit)
                 return new_visit
         except Exception as ex:
-            raise None
+            return None

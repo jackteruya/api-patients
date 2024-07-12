@@ -11,7 +11,12 @@ class PatientRepositoryInterface(ABC):
         raise Exception("Method not implemented")
 
     @abstractmethod
-    def list_patients(self):
+    def list_patients(self, limit: int, offset: int):
+        """abstractmethod"""
+        raise Exception("Method not implemented")
+
+    @abstractmethod
+    def count_patients(self):
         """abstractmethod"""
         raise Exception("Method not implemented")
 
