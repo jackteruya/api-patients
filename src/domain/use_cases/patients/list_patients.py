@@ -17,7 +17,7 @@ class ListPatientUseCase:
             offset_ = 0 if offset in [0, 1] else limit*offset-1
             patients = self._patient_repository.list_patients(limit, offset_)
             if not patients:
-                return ResponseFailure(ResponseTypes.PARAMETERS_ERROR, 'Not Insert')
+                return ResponseFailure(ResponseTypes.PARAMETERS_ERROR, 'Not Found')
             patients = [self._validate_patient(patient) for patient in patients]
             count_patients = self._patient_repository.count_patients()
             return ResponseListSuccess(patients, limit, offset, count_patients)

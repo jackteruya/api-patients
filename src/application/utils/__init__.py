@@ -1,1 +1,1 @@
-from status_code import STATUS_CODES
+from .status_code import STATUS_CODES
