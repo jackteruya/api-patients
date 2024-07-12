@@ -1,18 +1,19 @@
+import os
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
+
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 
 class DBConnectionHandler:
 
     def __init__(self) -> None:
-        self.__connection_string = "{}://{}:{}@{}:{}/{}".format(
-            'postgresql+psycopg',
-            'postgres',
-            'postgres',
-            '127.0.0.1',
-            '5432',
-            'dbp'
-        )
+        self.__connection_string = f"{os.getenv('DB_URL')}" if os.getenv('DB_URL') else 'sqlite:///backend_test.db'
         self.__engine = self.__create_database_engine()
         self.session = None
 
