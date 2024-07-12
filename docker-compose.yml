@@ -1,0 +1,29 @@
+version: "3"
+services:
+    app-patient:
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        command: sh -c "alembic upgrade head; uvicorn src.application.server:app --host 0.0.0.0 --port 8000 --reload"
+        depends_on:
+            - db-patient
+        volumes:
+            - .:/app
+        ports:
+            - 8000:8000
+        environment:
+            DB_URL: postgresql+psycopg://postgres:postgres@db-patient:5432/dbp
+
+    db-patient:
+        image: postgres:14-alpine
+        environment:
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: dbp
+            POSTGRES_HOST: 127.0.0.1
+        ports:
+            - 5432:5432
+        volumes:
+            - database-patient:/var/lib/postgresql/data
+
+volumes:
+    database-patient:
