@@ -290,3 +290,6 @@ pyrightconfig.json
 
 
 .idea
+*.db
+*.sql
+backend_test.db
