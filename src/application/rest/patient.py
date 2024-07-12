@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 
 from src.application.schemas.patient import PatientCreateEditSchema, PatientSchema, DataPatientsSchema
-from src.domain.use_cases.patients import CreatePatientUseCase, ListPatientUseCase
+from src.domain.use_cases.patients import CreatePatientUseCase, ListPatientUseCase, EditPatientUseCase
 from src.infra.db.repository import PatientRepository, VisitRepository
 from src.infra.db.settings import DBConnectionHandler
 
@@ -39,8 +39,15 @@ def create_patients(patient: PatientCreateEditSchema):
 
 @patient_route.put('/{id}', response_model=PatientSchema)
 def edit_patients(id: int, patient: PatientCreateEditSchema):
-    data = patient.model_dump()
-    data['id'] = id
-    list_[id-1] = data
-    return PatientSchema(**data).model_dump()
+    use_case = EditPatientUseCase(PatientRepository(DBConnectionHandler))
+    result = use_case.execute(id, patient)
+    return PatientSchema(
+        id=result.value.id,
+        name=result.value.name,
+        birth_date=result.value.birth_date.strftime('%y-%m-%d'),
+        address=result.value.address,
+        phone=result.value.phone,
+        email=result.value.email,
+        medical_history=result.value.medical_history
+    ).model_dump()
 
