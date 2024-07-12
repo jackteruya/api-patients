@@ -12,9 +12,6 @@ from src.response import ResponseTypes
 patient_route: APIRouter = APIRouter(prefix="/api/v1/patients")
 
 
-list_ = []
-
-
 @patient_route.get('', status_code=status.HTTP_200_OK, response_model=DataPatientsSchema)
 def list_patients(page: int | None = 1, limit: int | None = 5):
     use_case = ListPatientUseCase(
@@ -42,7 +39,6 @@ def create_patients(patient: PatientCreateEditSchema):
         email=result.value.email,
         medical_history=result.value.medical_history,
     ).model_dump()
-    # return data.value
 
 
 @patient_route.put('/{id}', status_code=status.HTTP_200_OK, response_model=PatientSchema)

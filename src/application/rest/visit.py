@@ -10,9 +10,6 @@ from src.response import ResponseTypes
 visit_route: APIRouter = APIRouter(prefix="/api/v1/visits")
 
 
-list_ = []
-
-
 @visit_route.post('', status_code=status.HTTP_201_CREATED, response_model=VisitSchema)
 def create_visits(visit: VisitCreateEditSchema):
     user_case = CreateVisitUseCase(VisitRepository(DBConnectionHandler))
