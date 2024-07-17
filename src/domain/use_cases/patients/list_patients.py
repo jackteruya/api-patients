@@ -38,8 +38,8 @@ class ListPatientUseCase:
     def _get_age(self, birth_date):
         today = date.today()
         age = today.year - birth_date.year
-        if today.month <= birth_date.month:
-            if today.day < birth_date.day:
+        if today.month >= birth_date.month:
+            if today.day > birth_date.day:
                 age -= 1
         return age
 
